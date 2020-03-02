@@ -6,7 +6,7 @@ export default class Helpers {
 
     static _createHeaders = (contentType, contentLength, ... additionalPairs) => {
         let pairs = [
-           [ "Authorization", `Bearer ${_accessToken}` ]
+           [ "Authorization", `Bearer ${Helpers._accessToken}` ]
         ];
         
         [
