@@ -4,7 +4,7 @@ import {
    StaticUtils,
    ArrayStringifier
 } from "simple-common-utils";
-import GDrive from "./GDrive";
+import Helpers from './Helpers'
 
 const uploadUrl = "https://www.googleapis.com/upload/drive/v3/files";
 
@@ -39,7 +39,7 @@ export default class Files {
       const ending = `\n${ddb}--`;
       
       let body = `\n${ddb}\n` +
-         `Content-Type: ${GDrive._contentTypeJson}\n\n` +
+         `Content-Type: ${Helpers._contentTypeJson}\n\n` +
          `${JSON.stringify(metadata)}\n\n${ddb}\n` +
          (isBase64 ? "Content-Transfer-Encoding: base64\n" : '') +
          `Content-Type: ${mediaType}\n\n`;
@@ -56,7 +56,7 @@ export default class Files {
       return fetch(
          `${uploadUrl}?uploadType=multipart`, {
             method: "POST",
-            headers: GDrive._createHeaders(
+            headers: Helpers._createHeaders(
                `multipart/related; boundary=${this.params.boundary}`,
                body.length
             ),
@@ -65,9 +65,9 @@ export default class Files {
    }
    
    delete(fileId) {
-      return fetch(`${GDrive._urlFiles}/${fileId}`, {
+      return fetch(`${Helpers._urlFiles}/${fileId}`, {
          method: "DELETE",
-         headers: GDrive._createHeaders()
+         headers: Helpers._createHeaders()
       });
    }
    
@@ -79,10 +79,10 @@ export default class Files {
          
          const body = JSON.stringify(metadata);
          
-         result = await fetch(GDrive._urlFiles, {
+         result = await fetch(Helpers_urlFiles, {
             method: "POST",
-            headers: GDrive._createHeaders(
-               GDrive._contentTypeJson,
+            headers: Helpers._createHeaders(
+               Helpers_contentTypeJson,
                body.length),
             body
          });
@@ -121,8 +121,8 @@ export default class Files {
    get(fileId, queryParams) {
       const parameters = _stringifyQueryParams(queryParams);
       
-      return fetch(`${GDrive._urlFiles}/${fileId}${parameters}`, {
-         headers: GDrive._createHeaders()
+      return fetch(`${Helpers._urlFiles}/${fileId}${parameters}`, {
+         headers: Helpers._createHeaders()
       });
    }
    
@@ -131,24 +131,24 @@ export default class Files {
       
       const parameters = _stringifyQueryParams(queryParams);
       
-      downloadFileOptions.fromUrl = `${GDrive._urlFiles}/${fileId}${parameters}`;
+      downloadFileOptions.fromUrl = `${Helpers_urlFiles}/${fileId}${parameters}`;
       
       downloadFileOptions.headers = Object.assign({
-         "Authorization": `Bearer ${GDrive.accessToken}`
+         "Authorization": `Bearer ${Helpers._accessToken}`
       }, downloadFileOptions.headers);
       
       return RNFS.downloadFile(downloadFileOptions);
    }
    
    list(queryParams) {
-      return fetch(`${GDrive._urlFiles}${_stringifyQueryParams(queryParams)}`, {
-         headers: GDrive._createHeaders()
+      return fetch(`${Helpers._urlFiles}${_stringifyQueryParams(queryParams)}`, {
+         headers: Helpers._createHeaders()
       });
    }
    
    export(fileId, mimeType) {
-      return fetch(`${GDrive._urlFiles}/${fileId}/export?mimeType=${mimeType}`, {
-         headers: GDrive._createHeaders()
+      return fetch(`${Helpers._urlFiles}/${fileId}/export?mimeType=${mimeType}`, {
+         headers: Helpers._createHeaders()
       });
    }
 }
