@@ -73,16 +73,15 @@ export default class Files {
    
    async safeCreateFolder(metadata) {
       let id = await this.getId(metadata.name, metadata.parents, Files.mimeFolder);
-      
       if (!id) {
          metadata.mimeType = Files.mimeFolder;
          
          const body = JSON.stringify(metadata);
          
-         result = await fetch(Helpers_urlFiles, {
+         result = await fetch(Helpers._urlFiles, {
             method: "POST",
             headers: Helpers._createHeaders(
-               Helpers_contentTypeJson,
+               Helpers._contentTypeJson,
                body.length),
             body
          });
@@ -131,7 +130,7 @@ export default class Files {
       
       const parameters = _stringifyQueryParams(queryParams);
       
-      downloadFileOptions.fromUrl = `${Helpers_urlFiles}/${fileId}${parameters}`;
+      downloadFileOptions.fromUrl = `${Helpers._urlFiles}/${fileId}${parameters}`;
       
       downloadFileOptions.headers = Object.assign({
          "Authorization": `Bearer ${Helpers._accessToken}`
